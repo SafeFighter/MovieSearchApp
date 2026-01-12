@@ -1,6 +1,6 @@
-const API_KEY = import.meta.env.VITE_EXAMPLE_API_KEY;
+const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
-async function fetchMovie(movieName) {
+export async function fetchMovie(movieName) {
   const apiUrl = `https://www.omdbapi.com/?t=${encodeURIComponent(
     movieName
   )}&apikey=${API_KEY}`;
