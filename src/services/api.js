@@ -20,7 +20,7 @@ export async function fetchMovie(movieName) {
 
 export async function fetchMovieDetail(movieID) {
   const apiUrl = `https://www.omdbapi.com/?i=${encodeURIComponent(
-    movieName
+    movieID
   )}&apikey=${API_KEY}`;
 
   const response = await fetch(apiUrl);
