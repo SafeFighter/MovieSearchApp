@@ -2,6 +2,7 @@ import SearchBar from "../components/SearchBar";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMovie } from "../services/api.js";
 import { useState } from "react";
+import MovieCard from "../components/MovieCard.jsx";
 
 function Home() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -18,9 +19,6 @@ function Home() {
   if (isError) {
     return <p>{error.message}</p>;
   }
-  if (data) {
-    console.log(data);
-  }
 
   return (
     <>
@@ -30,6 +28,11 @@ function Home() {
       </section>
       <section className="searchMovie">
         <SearchBar onSearch={setSearchTerm} />
+      </section>
+      <section className="movie-response">
+        {data?.map((film) => (
+          <MovieCard key={film.imdbID} movie={film} />
+        ))}
       </section>
     </>
   );
