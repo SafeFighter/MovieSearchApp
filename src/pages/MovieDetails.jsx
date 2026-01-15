@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { fetchMovieDetail } from "../services/api.js";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 
 function MovieDetails() {
   const { imdbID } = useParams();
@@ -20,6 +21,16 @@ function MovieDetails() {
 
   return (
     <>
+      <nav>
+        <ul>
+          <li>
+            <Link to="/home">Return</Link>
+          </li>
+          <li>
+            <button>Watchlist</button>
+          </li>
+        </ul>
+      </nav>
       <section className="header">
         <h1>
           {data.Title} ({data.Year})
