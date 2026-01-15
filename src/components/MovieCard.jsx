@@ -14,6 +14,7 @@ function MovieCard({ movie }) {
               e.currentTarget.src =
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/330px-No_image_available.svg.png";
             }}
+            loading="lazy"
           />
         </div>
       </Link>
