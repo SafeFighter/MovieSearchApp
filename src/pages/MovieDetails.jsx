@@ -3,6 +3,7 @@ import { fetchMovieDetail } from "../services/api.js";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import MovieList from "../components/MovieList.jsx";
 
 function MovieDetails() {
   const { imdbID } = useParams();
@@ -11,6 +12,15 @@ function MovieDetails() {
     return saved ? JSON.parse(saved) : [];
   });
   const [isOnWatchlist, setIsOnWatchlist] = useState(false);
+  const [toggleWatchlist, setToggleWatchlist] = useState(false);
+
+  function openWatchlist() {
+    if (toggleWatchlist) {
+      setToggleWatchlist(false);
+    } else {
+      setToggleWatchlist(true);
+    }
+  }
 
   useEffect(() => {
     localStorage.setItem("watchlist", JSON.stringify(watchlist));
@@ -18,7 +28,7 @@ function MovieDetails() {
 
   function addToWatchList() {
     const exists = watchlist.some((movie) => movie.key === imdbID);
-    if (exists) return;
+    if (exists) return alert("Movie is already on watchlist");
     const newMovie = { name: data.Title, key: imdbID };
     const updateList = [...watchlist, newMovie];
     setWatchlist(updateList);
@@ -46,15 +56,17 @@ function MovieDetails() {
             <Link to="/home">Return</Link>
           </li>
           <li>
-            <button>Watchlist</button>
+            <button onClick={openWatchlist}>Watchlist</button>
           </li>
         </ul>
       </nav>
+      {toggleWatchlist && <MovieList />}
       <section className="header">
         <h1>
           {data.Title} ({data.Year})
         </h1>
         <button onClick={addToWatchList}>Add to Watchlist</button>
+
         <img
           src={data.Poster}
           loading="lazy"

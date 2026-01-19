@@ -4,9 +4,19 @@ import { fetchMovie } from "../services/api.js";
 import { useState } from "react";
 import MovieCard from "../components/MovieCard.jsx";
 import { Link } from "react-router-dom";
+import MovieList from "../components/MovieList.jsx";
 
 function Home() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [toggleWatchlist, setToggleWatchlist] = useState(false);
+
+  function openWatchlist() {
+    if (toggleWatchlist) {
+      setToggleWatchlist(false);
+    } else {
+      setToggleWatchlist(true);
+    }
+  }
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["movies", searchTerm],
@@ -29,10 +39,11 @@ function Home() {
             <Link to="/home">Home</Link>
           </li>
           <li>
-            <button>Watchlist</button>
+            <button onClick={openWatchlist}>Watchlist</button>
           </li>
         </ul>
       </nav>
+      {toggleWatchlist && <MovieList />}
       <section className="hero">
         <h1>Movie search engine</h1>
         <h5>Powered by OMDB</h5>
