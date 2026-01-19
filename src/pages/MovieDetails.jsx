@@ -2,9 +2,28 @@ import { useParams } from "react-router-dom";
 import { fetchMovieDetail } from "../services/api.js";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 function MovieDetails() {
   const { imdbID } = useParams();
+  const [watchlist, setWatchlist] = useState(() => {
+    const saved = localStorage.getItem("watchlist");
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [isOnWatchlist, setIsOnWatchlist] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem("watchlist", JSON.stringify(watchlist));
+  }, [watchlist]);
+
+  function addToWatchList() {
+    const exists = watchlist.some((movie) => movie.key === imdbID);
+    if (exists) return;
+    const newMovie = { name: data.Title, key: imdbID };
+    const updateList = [...watchlist, newMovie];
+    setWatchlist(updateList);
+    setIsOnWatchlist(true);
+  }
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["movie", imdbID],
@@ -35,6 +54,7 @@ function MovieDetails() {
         <h1>
           {data.Title} ({data.Year})
         </h1>
+        <button onClick={addToWatchList}>Add to Watchlist</button>
         <img
           src={data.Poster}
           loading="lazy"
