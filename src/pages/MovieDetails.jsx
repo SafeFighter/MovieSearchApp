@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import MovieList from "../components/MovieList.jsx";
+import "../styles/MovieDetail.css";
 
 function MovieDetails() {
   const { imdbID } = useParams();

@@ -5,6 +5,7 @@ import { useState } from "react";
 import MovieCard from "../components/MovieCard.jsx";
 import { Link } from "react-router-dom";
 import MovieList from "../components/MovieList.jsx";
+import "../styles/Home.css";
 
 function Home() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -57,7 +58,7 @@ function Home() {
       <section className="searchMovie">
         <SearchBar onSearch={setSearchTerm} />
       </section>
-      <section className="movie-response">
+      <section className="movie-sort">
         <select
           value={sortOrder}
           onChange={(e) => setSortOrder(e.target.value)}
@@ -65,6 +66,8 @@ function Home() {
           <option value="asc">Newest Release</option>
           <option calue="desc">Oldest Release</option>
         </select>
+      </section>
+      <section className="movie-response">
         {sortedData.map((film) => (
           <MovieCard key={film.imdbID} movie={film} />
         ))}

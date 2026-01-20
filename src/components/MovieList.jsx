@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import "../styles/MovieList.css";
 
 function MovieList() {
   const [watchlist, setWatchlist] = useState(() => {
