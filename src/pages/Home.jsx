@@ -9,6 +9,7 @@ import MovieList from "../components/MovieList.jsx";
 function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [toggleWatchlist, setToggleWatchlist] = useState(false);
+  const [sortOrder, setSortOrder] = useState("asc");
 
   function openWatchlist() {
     if (toggleWatchlist) {
@@ -30,6 +31,11 @@ function Home() {
   if (isError) {
     return <p>{error.message}</p>;
   }
+  const sortedData = data
+    ? [...data].sort((a, b) =>
+        sortOrder === "asc" ? b.Year - a.Year : a.Year - b.Year,
+      )
+    : [];
 
   return (
     <>
@@ -52,7 +58,14 @@ function Home() {
         <SearchBar onSearch={setSearchTerm} />
       </section>
       <section className="movie-response">
-        {data?.map((film) => (
+        <select
+          value={sortOrder}
+          onChange={(e) => setSortOrder(e.target.value)}
+        >
+          <option value="asc">Newest Release</option>
+          <option calue="desc">Oldest Release</option>
+        </select>
+        {sortedData.map((film) => (
           <MovieCard key={film.imdbID} movie={film} />
         ))}
       </section>
