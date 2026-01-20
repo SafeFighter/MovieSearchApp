@@ -29,7 +29,7 @@ function MovieDetails() {
   function addToWatchList() {
     const exists = watchlist.some((movie) => movie.key === imdbID);
     if (exists) return alert("Movie is already on watchlist");
-    const newMovie = { name: data.Title, key: imdbID };
+    const newMovie = { name: data.Title, id: imdbID };
     const updateList = [...watchlist, newMovie];
     setWatchlist(updateList);
     setIsOnWatchlist(true);
