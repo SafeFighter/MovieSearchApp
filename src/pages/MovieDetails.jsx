@@ -1,40 +1,19 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { fetchMovieDetail } from "../services/api.js";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import MovieList from "../components/MovieList.jsx";
 import "../styles/MovieDetail.css";
 
 function MovieDetails() {
   const { imdbID } = useParams();
+
   const [watchlist, setWatchlist] = useState(() => {
     const saved = localStorage.getItem("watchlist");
     return saved ? JSON.parse(saved) : [];
   });
-  const [isOnWatchlist, setIsOnWatchlist] = useState(false);
+
   const [toggleWatchlist, setToggleWatchlist] = useState(false);
-
-  function openWatchlist() {
-    if (toggleWatchlist) {
-      setToggleWatchlist(false);
-    } else {
-      setToggleWatchlist(true);
-    }
-  }
-
-  useEffect(() => {
-    localStorage.setItem("watchlist", JSON.stringify(watchlist));
-  }, [watchlist]);
-
-  function addToWatchList() {
-    const exists = watchlist.some((movie) => movie.key === imdbID);
-    if (exists) return alert("Movie is already on watchlist");
-    const newMovie = { name: data.Title, id: imdbID };
-    const updateList = [...watchlist, newMovie];
-    setWatchlist(updateList);
-    setIsOnWatchlist(true);
-  }
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["movie", imdbID],
@@ -42,68 +21,105 @@ function MovieDetails() {
     staleTime: 5 * 60 * 1000,
   });
 
-  if (isLoading) {
-    return <p>🔄 Loading movie details ...</p>;
+  useEffect(() => {
+    localStorage.setItem("watchlist", JSON.stringify(watchlist));
+  }, [watchlist]);
+
+  function addToWatchList() {
+    const exists = watchlist.some((movie) => movie.id === imdbID);
+    if (exists) return alert("Movie is already on watchlist");
+
+    const newMovie = {
+      id: imdbID,
+      name: data.Title,
+    };
+
+    setWatchlist([...watchlist, newMovie]);
   }
-  if (isError) {
-    return <p>{error.message}</p>;
-  }
+
+  if (isLoading) return <p>🔄 Loading movie details...</p>;
+  if (isError) return <p>{error.message}</p>;
 
   return (
     <>
       <nav>
         <ul>
           <li>
-            <Link to="/home">Return</Link>
+            <Link to="/home">⬅ Return</Link>
           </li>
           <li>
-            <button onClick={openWatchlist}>Watchlist</button>
+            <button onClick={() => setToggleWatchlist(!toggleWatchlist)}>
+              Watchlist
+            </button>
           </li>
         </ul>
       </nav>
-      {toggleWatchlist && <MovieList />}
-      <section className="header">
-        <h1>
-          {data.Title} ({data.Year})
-        </h1>
-        <button onClick={addToWatchList}>Add to Watchlist</button>
 
-        <img
-          src={data.Poster}
-          loading="lazy"
-          onError={(e) => {
-            e.currentTarget.src =
-              "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/330px-No_image_available.svg.png";
-          }}
-        />
-      </section>
-      <section className="about">
-        <p>
-          <b>Actors: </b> {data.Actors}
-        </p>
-        <div>
-          <b>Rating</b>{" "}
-          <ul>
-            {data.Ratings.map((r) => (
-              <li key={r.Source}>
-                {r.Source}: {r.Value}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <p>
-          <b>Plot:</b> {data.Plot}
-        </p>
-        <p>
-          <b>Runtime: </b>
-          {data.Runtime}
-        </p>
-        <p>
-          <b>Release data: </b>
-          {data.Released}
-        </p>
-      </section>
+      {toggleWatchlist && <MovieList />}
+
+      <div className="movie-layout">
+        <section className="movie-main">
+          <img
+            className="movie-poster"
+            src={data.Poster}
+            alt={data.Title}
+            loading="lazy"
+            onError={(e) => {
+              e.currentTarget.src =
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/330px-No_image_available.svg.png";
+            }}
+          />
+
+          <button className="watchlist-btn" onClick={addToWatchList}>
+            ➕ Add to Watchlist
+          </button>
+        </section>
+
+        <section className="movie-info">
+          <h1>
+            {data.Title} <span>({data.Year})</span>
+          </h1>
+
+          <p className="plot">{data.Plot}</p>
+
+          <div className="info-grid">
+            <div>
+              <b>Actors:</b>
+              <br />
+              {data.Actors}
+            </div>
+            <div>
+              <b>Genre:</b>
+              <br />
+              {data.Genre}
+            </div>
+            <div>
+              <b>Runtime:</b>
+              <br />
+              {data.Runtime}
+            </div>
+            <div>
+              <b>Released:</b>
+              <br />
+              {data.Released}
+            </div>
+          </div>
+
+          <div className="ratings">
+            <h3>Ratings</h3>
+            <ul>
+              {data.Ratings.map((r) => (
+                <li key={r.Source}>
+                  <span>{r.Source}</span>
+                  <span>{r.Value}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      </div>
     </>
   );
 }
+
 export default MovieDetails;
