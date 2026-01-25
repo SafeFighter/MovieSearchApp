@@ -6,6 +6,7 @@ import MovieCard from "../components/MovieCard.jsx";
 import { Link } from "react-router-dom";
 import MovieList from "../components/MovieList.jsx";
 import "../styles/Home.css";
+import { Helmet } from "react-helmet-async";
 
 function Home() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -40,6 +41,13 @@ function Home() {
 
   return (
     <>
+      <Helmet>
+        <title>Movie Search App | React & OMDb API</title>
+        <meta
+          name="description"
+          content="Search movies using the OMDb API. Find ratings, plot and release year."
+        />
+      </Helmet>
       <nav>
         <ul>
           <li>

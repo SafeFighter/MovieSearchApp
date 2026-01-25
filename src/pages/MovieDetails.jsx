@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import MovieList from "../components/MovieList.jsx";
 import "../styles/MovieDetail.css";
+import { Helmet } from "react-helmet-async";
 
 function MovieDetails() {
   const { imdbID } = useParams();
@@ -42,6 +43,16 @@ function MovieDetails() {
 
   return (
     <>
+      <Helmet>
+        <title>
+          {data.Title} ({data.Year}) | Movie Search App
+        </title>
+        <meta
+          name="description"
+          content={`Details and ratings for ${data.Title} (${data.Year}).`}
+        />
+        <meta property="og:image" content={data.Poster} />
+      </Helmet>
       <nav>
         <ul>
           <li>
