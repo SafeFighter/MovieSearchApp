@@ -18,7 +18,6 @@ function MovieList() {
   return (
     <>
       <div className="watchlist">
-        <h4>My Watchlist</h4>
         <ul>
           {watchlist.map((movie, index) => (
             <li key={index}>

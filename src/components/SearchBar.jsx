@@ -19,7 +19,12 @@ function SearchBar({ onSearch }) {
 
   return (
     <>
-      <input type="text" onChange={handleChange} value={input} />
+      <input
+        name="movieSearch"
+        type="text"
+        onChange={handleChange}
+        value={input}
+      />
       <button onClick={handleSearch}>Search</button>
       {inputError && <p>Please input move name</p>}
     </>

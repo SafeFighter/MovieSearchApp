@@ -68,11 +68,16 @@ function Home() {
       </section>
       <section className="movie-sort">
         <select
+          name="sort"
           value={sortOrder}
           onChange={(e) => setSortOrder(e.target.value)}
         >
-          <option value="asc">Newest Release</option>
-          <option calue="desc">Oldest Release</option>
+          <option name="asc" value="asc">
+            Newest Release
+          </option>
+          <option name="desc" value="desc">
+            Oldest Release
+          </option>
         </select>
       </section>
       <section className="movie-response">
