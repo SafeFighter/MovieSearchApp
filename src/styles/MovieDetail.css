@@ -48,13 +48,18 @@
   gap: 15px;
   margin-bottom: 30px;
 }
+.info-grid-div {
+  transition: transform 0.25s ease;
+}
 
 .info-grid div {
   background: #f5f5f5;
   padding: 10px 15px;
   border-radius: 6px;
 }
-
+.info-grid-div:hover {
+  transform: translateY(-3px);
+}
 .ratings ul {
   list-style: none;
   padding: 0;

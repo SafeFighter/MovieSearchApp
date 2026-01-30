@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import MovieList from "../components/MovieList.jsx";
 import "../styles/MovieDetail.css";
 import { Helmet } from "react-helmet-async";
+import Tilt from "react-vanilla-tilt";
 
 function MovieDetails() {
   const { imdbID } = useParams();
@@ -70,16 +71,27 @@ function MovieDetails() {
 
       <div className="movie-layout">
         <section className="movie-main">
-          <img
-            className="movie-poster"
-            src={data.Poster}
-            alt={data.Title}
-            loading="lazy"
-            onError={(e) => {
-              e.currentTarget.src =
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/330px-No_image_available.svg.png";
+          <Tilt
+            option={{
+              max: 80,
+              scale: 1.05,
+              speed: 400,
+              glare: true,
+              "max-glare": 0.3,
             }}
-          />
+            style={{ background: "transparent", display: "inline-block" }}
+          >
+            <img
+              className="movie-poster"
+              src={data.Poster}
+              alt={data.Title}
+              loading="lazy"
+              onError={(e) => {
+                e.currentTarget.src =
+                  "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/330px-No_image_available.svg.png";
+              }}
+            />
+          </Tilt>
 
           <button className="watchlist-btn" onClick={addToWatchList}>
             ➕ Add to Watchlist
@@ -94,22 +106,22 @@ function MovieDetails() {
           <p className="plot">{data.Plot}</p>
 
           <div className="info-grid">
-            <div>
+            <div className="info-grid-div">
               <b>Actors:</b>
               <br />
               {data.Actors}
             </div>
-            <div>
+            <div className="info-grid-div">
               <b>Genre:</b>
               <br />
               {data.Genre}
             </div>
-            <div>
+            <div className="info-grid-div">
               <b>Runtime:</b>
               <br />
               {data.Runtime}
             </div>
-            <div>
+            <div className="info-grid-div">
               <b>Released:</b>
               <br />
               {data.Released}
